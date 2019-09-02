@@ -17,10 +17,15 @@ import com.ly.tvplayer.base.CommonResponse;
 import com.ly.tvplayer.bean.TestBean;
 import com.ly.tvplayer.utils.NetWorkUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,7 +119,33 @@ public class HttpService {
             });
             //POST请求
         } else {
+            MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+            JSONObject jsonObject = new JSONObject();
+            try {
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    jsonObject.put(entry.getKey().trim(), entry.getValue().trim());
+                }
+            } catch (JSONException e) {
+                sendSuccessMsg(e.getMessage(),url);
+                return;
+            }
+            //转为json字符
+            String str = jsonObject.toString();
+            // 获取到请求体（RequestBody）
+            final RequestBody requestBody = RequestBody.create(mediaType, str);
 
+            Call<ResponseBody> call = iServer.postServer(url, requestBody);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    sendSuccessMsg(new Object(),url);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    sendSuccessMsg(t.getMessage(),url);
+                }
+            });
         }
     }
 
