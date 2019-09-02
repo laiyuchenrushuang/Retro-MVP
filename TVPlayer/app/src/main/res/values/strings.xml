@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">蓉e行视频体验</string>
+    <string name="text1">温馨提示：线上观看视频、学习知识点并答题、完成驾驶体验，同时即拍即传本人照片至平台，系统将自动抵扣 1天 现场学习学时。</string>
+    <string name="text2">扫码进入蓉e行，体验视频学习\n即刻抵扣现场学习学时</string>
+    <string name="warring">\"网络请求数据为空\"</string>
+</resources>
